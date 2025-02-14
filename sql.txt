@@ -1,0 +1,20 @@
+CREATE DATABASE TComplex;
+USE TComplex;
+CREATE TABLE MatBang (
+                         maMatBang VARCHAR(10) PRIMARY KEY, -- Định dạng XXX-XX-XX
+                         trangThai ENUM('Trong', 'Ha Tang', 'Day Du') NOT NULL,
+                         dienTich FLOAT CHECK (dienTich > 20), -- Diện tích phải lớn hơn 20m²
+                         tang INT CHECK (tang BETWEEN 1 AND 15), -- Chỉ có 15 tầng
+                         loaiMatBang ENUM('Van phong chia se', 'Van phong tron goi') NOT NULL,
+                         giaTien BIGINT CHECK (giaTien > 1000000), -- Giá tiền phải lớn hơn 1 triệu VNĐ
+                         ngayBatDau DATE NOT NULL,
+                         ngayKetThuc DATE NOT NULL,
+                         CONSTRAINT chk_date CHECK (DATEDIFF(ngayKetThuc, ngayBatDau) >= 180) -- Ngày bắt đầu phải nhỏ hơn ngày kết thúc ít nhất 6 tháng
+);
+ALTER TABLE MatBang ADD CONSTRAINT unique_maMatBang UNIQUE (maMatBang);
+INSERT INTO MatBang (maMatBang, trangThai, dienTich, tang, loaiMatBang, giaTien, ngayBatDau, ngayKetThuc)
+VALUES
+    ('A12-01-01', 'Trong', 25, 1, 'Van phong chia se', 2000000, '2024-06-01', '2024-12-01'),
+    ('B34-02-02', 'Ha Tang', 50, 2, 'Van phong tron goi', 5000000, '2024-07-01', '2025-01-01');
+
+select * from MatBang;
